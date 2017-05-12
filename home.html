@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Smart Cloud</title>
+ 	<link rel="stylesheet" type="text/css" href="css/materailapp.css">
+  <link rel="stylesheet" type="text/css" href="css/materailicon.css">
+  <link rel="stylesheet" type="text/css" href="css/myapp.css">
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet"> -->
+  <link rel="stylesheet" href="css/angular-material.min.css">
+
+
+</head>
+
+<body  class="body"  ng-app="app" ng-cloak>
+  <!-- container #1 -->
+
+  <md-toolbar style="background-color: #1488c6;min-height: 55px" layout="row" class="md-toolbar-tools">
+  
+    <div><img src="images/png/ciscologo.png"></div>
+     <div style="display: inherit; margin-left: auto"><a href="/portal/index.html"><i style="color: #fff" class="material-icons">home</i></a></div>
+     <div style="margin-left:30px;padding-right: 30px;"><i style="color: #fff" class="material-icons">person</i></div>
+  </md-toolbar>
+  
+  <!-- container #2 this include container #3 4# -->
+  <div  flex layout="row" ng-controller="menuController">
+
+    <!-- containter #3 -->
+    <md-sidenav style="max-width:200px;min-height:800px;padding-top: 60px" class="md-whiteframe-3dp" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left">
+    <md-list>
+      <md-list-item style="padding: 1px" ng-repeat="menu in menus">
+        <md-button style="margin: 0px;padding: 10px;font-size: 18px;color: #aaa" class="md-primary md-hue-1" ng-click="toggleList()" ui-sref="{{menu.url}}">
+         <div style="display: block;float: left;margin-top:5px;"><i class="material-icons">{{ menu.avatar }}</i></div>
+         <div style="display: block;float: left;padding-left: 10px;">{{menu.name}}</div>
+        </md-button>
+      </md-list-item>
+    </md-list>
+    </md-sidenav>  
+
+     <md-button class="menu md-icon-button" hide-gt-sm ng-click="toggleList()">
+       <div style="display: block;float: left;"><i style="color: #1798de" class="material-icons">menu</i></div> 
+    </md-button>
+   <!-- containter #4 --> 
+    <md-content style="color: #aaa;" flex id="content">
+         <ui-view></ui-view>
+    </md-content>  
+   
+
+
+  </div>
+
+  <div class="footer" ng-hide="true" back-img="images/cisco-logo.png">@CopyRight 2016 Cisco Greate China DTG </div>
+     
+  <script src="lib/1.5.8/angular.min.js"></script>
+  <script type="application/javascript" src="lib/angular-ui-router.js"></script>
+  <script src="lib/1.5.8/angular-animate.min.js"></script>
+  <script src="lib/1.5.8/angular-aria.min.js"></script>
+  <script src="lib/1.5.8/angular-messages.min.js"></script>
+  <script src="lib/1.5.8/angular-material.min.js"></script>
+   <!-- My App Library-->
+  <script type="application/javascript" src="lib/app.js"></script>
+</body>
+</html>
