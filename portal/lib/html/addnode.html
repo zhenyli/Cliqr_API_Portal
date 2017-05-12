@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>addnode</title>
+  <link rel="stylesheet" type="text/css" href="css/materailapp.css">
+  <link rel="stylesheet" type="text/css" href="css/materailicon.css">
+  <link rel="stylesheet" type="text/css" href="css/myapp.css">
+  <link rel="stylesheet" href="css/angular-material.min.css">
+  <script src="framework/angular.min.js"></script>
+  <script src="framework/angular-animate.min.js"></script>
+  <script src="framework/angular-aria.min.js"></script>
+  <script src="framework/angular-messages.min.js"></script>
+  <script src="framework/angular-material.min.js"></script>
+  <script src="framework/highcharts.js"></script>
+
+  <script src="js/app.js"></script>
+  <script src="addnode/addnode.js"></script>
+</head>
+
+<body class="body" ng-app="app" ng-cloak>
+    <md-subheader style="display: block; color:#fff;font-size: 18px;padding-left: 30px;padding-right: 30px;background-color: #1798de;height: 60px;" class="md-primary">
+        <div style="display: block; float: left;">部署云应用</div>
+    </md-subheader>
+    <div ng-controller='addnodeController'>
+        <md-content>
+            <md-card>
+               
+                <div ng-if="step == 1" style="padding: 30px 60px">
+                    <h3>选取应用</h3>
+                    <form step1 Application Settings style="padding: 30px 70px">
+                        <md-radio-group layout="row" layout-xs="column" class="md-primary" ng-model="appInfo.id" ng-init="getAppList()" ng-change="application()">
+                            <md-radio-button ng-repeat="x in appInfo" ng-value="x.id" style="width: 200px;height: 100px">
+                                <img ng-src="{{x.imgUrl}}" style="width: 100px;height: 100px">
+                                {{x.name}}
+                                <br>
+                            </md-radio-button>
+                        </md-radio-group>
+                        <br>
+                        <br>
+                        <br>            
+                        <md-radio-group layout="row" layout-xs="column" class="md-primary" ng-model="versionInfo.versions" ng-change="getAppDetail()">
+                            <md-radio-button ng-repeat="x in versionInfo" ng-value="x.versions" aria-label="VERSION">
+                                <h4>VERSION:</h4> 
+                                {{x.versions}}
+                            </md-radio-button>
+                        </md-radio-group>
+                        <br> 
+                        部署应用名:
+                        <br>
+                        <input type="text" ng-model="nTier.name">
+                    </form>
+                </div>
+
+                <div ng-if="step == 2" style="padding: 30px 60px">
+                    <h3>选取环境</h3>
+                    <br>
+                    <form Environment Settings style="padding: 10px 70px">
+                        <md-radio-group layout="row" layout-xs="column" class="md-primary" ng-model="envInfo.id" ng-init="getDeployEnvs()" ng-change="environment()">
+                            <md-radio-button ng-repeat="x in envInfo" ng-value="x.id" style="width: 270px;height: 100px">
+                                <img ng-src="{{x.imgUrl}}" style="width: 100px;height: 100px">
+                                {{x.name}}
+                                <br>
+                            </md-radio-button>
+                        </md-radio-group>
+                        <br>
+                        <br>
+                        <br>            
+                        <md-radio-group layout="row" layout-xs="column" class="md-primary" ng-model="cloudRegionInfo.regionId" ng-change="cloud()">
+                            <md-radio-button ng-repeat="x in cloudRegionInfo" ng-value="x.regionId" aria-label="CLOUD REGION">
+                                <h4>CLOUD REGION:</h4>
+                                {{x.regionName}}
+                                <br>
+                            </md-radio-button>
+                        </md-radio-group>
+                        <br>
+                        <br>
+                        <md-radio-group layout="row" layout-xs="column" class="md-primary" ng-model="cloudAccountInfo.cloudAccountId" ng-change="cloud()">
+                            <md-radio-button ng-repeat="x in cloudAccountInfo" ng-value="x.cloudAccountId" aria-label="CLOUD ACCOUNT">
+                                <h4>CLOUD ACCOUNT:</h4>
+                                {{x.cloudAccountName}}
+                                <br>
+                            </md-radio-button><br>
+                        </md-radio-group>
+                    </form>
+                </div>
+
+                <div ng-if="step == 3" style="padding: 30px 60px">
+                    <h3>分配资源</h3><br>
+                    <form step3 Tier Setting style="padding: 10px 70px">    
+                        <md-radio-group layout="row" layout-xs="column" class="md-primary" ng-model="instanceInfo.instance" ng-init="getInstances()" ng-change="instance()">
+                            <md-radio-button ng-repeat="x in instanceInfo" ng-value="x.instance" aria-label="INSTANCE">
+                                <h4>INSTANCE TYPE:</h4>
+                                <img ng-src="{{x.imgUrl}}" style="width: 100px;height: 40px">
+                                <br> 
+                                {{x.instance}}
+                                <br>
+                            </md-radio-button>
+                        </md-radio-group>
+                        <br>
+                        <br>
+                        <md-radio-group layout="row" layout-xs="column" class="md-primary" ng-model="dataCenterInfo.value" ng-init="getCloudConfigs()" ng-change="resource()">
+                            <md-radio-button ng-repeat="x in dataCenterInfo" ng-value="x.value" aria-label="DATACENTER">
+                                <h4>DATACENTER:</h4>
+                                {{x.value}}
+                                <br>
+                            </md-radio-button>
+                        </md-radio-group>
+                        <br>
+                        <br>
+                        <md-radio-group layout="row" layout-xs="column" class="md-primary" ng-model="clusterInfo.value" ng-change="getNetworks()">
+                            <md-radio-button ng-repeat="x in clusterInfo" ng-value="x.value" aria-label="CLUSTER">
+                                <h4>CLUSTER:</h4> 
+                                {{x.value}}
+                                <br>
+                            </md-radio-button>
+                        </md-radio-group>
+                        <br>
+                        <br>
+                        <md-radio-group layout="row" layout-xs="column" class="md-primary" ng-model="netInfo.networkTypeName" ng-change="network()">
+                            <md-radio-button ng-repeat="x in netInfo" ng-value="x.networkTypeName" aria-label="NETWORK" style="float:left">
+                                <h4>NETWORK:</h4>
+                                {{x.networkTypeName}}
+                                <br>
+                            </md-radio-button>
+                        </md-radio-group>
+                        <br>
+                    </form>
+                    <!--<md-button ui-sref="hosts" class="md-primary md-raised" ng-click="confirmSettings()">确认</md-button>-->
+                </div>
+            </md-card>
+
+            <div style="padding: 30px 60px">
+                <md-button ui-sref="hosts" class="md-primary md-raised" ng-click="top()">返回</md-button>
+                <md-button ui-sref="hosts" class="md-primary md-raised" ng-click="previousStep()">上一步</md-button>
+                <md-button ui-sref="hosts" class="md-primary md-raised" ng-click="nextStep()">下一步</md-button>
+                <md-button class="md-primary md-raised"  ng-click="submitJob()">提交</md-button>    
+            </div>
+            <!--<div>{{nTier}}</div>-->
+        </md-content>
+        
+    </div>
+    
